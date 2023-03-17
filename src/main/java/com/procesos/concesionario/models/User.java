@@ -2,9 +2,7 @@ package com.procesos.concesionario.models;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
@@ -12,6 +10,7 @@ import java.time.LocalDate;
 
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
     private String firstName;
