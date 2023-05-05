@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.procesos.concesionario.utils.Constants.USER_NOT_FOUND;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
@@ -18,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private JWTUtil jwtUtil;
 
     public User getUserById(Long id){
-      return userRepository.findById(id).get();
+        return userRepository.findById(id).get();
     }
 
     @Override
@@ -43,14 +45,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(User user) {
-        Optional<User> userBd = userRepository.findByEmailAndPassword(user.getEmail(),
-                                                                    user.getPassword());
-    if (userBd.isEmpty()){
-        throw new RuntimeException("Usuario no encontrado!");
-    }
+        Optional<User> userBd = userRepository.findByEmailAndPassword(user.getEmail()
+                , user.getPassword());
+        if(userBd.isEmpty()){
+            throw new RuntimeException(USER_NOT_FOUND);
+        }
         return jwtUtil.create(String.valueOf(userBd.get().getId()),
-                       String.valueOf(userBd.get().getEmail()));
+                String.valueOf(userBd.get().getEmail()));
     }
 
 
 }
+
